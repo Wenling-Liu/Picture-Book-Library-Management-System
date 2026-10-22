@@ -1,0 +1,7 @@
+db:
+  addr: "root:12345678@tcp(127.0.0.1:23306)/bm?charset=utf8mb4&parseTime=True&loc=Local"
+cache:
+  addr: "127.0.0.1:26379"
+users:
+  - username: "admin"
+    password: "12345678"

@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # 你的 Go 服务
+  book_management:
+    container_name: "bm"
+    image: bm
+    ports:
+      - "8989:8989"
+    depends_on:
+      - mysql
+      - redis
+    restart: "always"
+    volumes:
+      - ./configs/config.yaml:/book_management/configs/config.yaml  # 挂载配置文件目录
+    networks:
+      - "my_network"
+#    network_mode: host  # 使用主机网络模式
+
+  # MySQL 服务
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: bm
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: "always"
+    networks:
+      - "my_network"
+#    network_mode: host  # 使用主机网络模式
+
+  # Redis 服务
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: "always"
+    networks:
+      - "my_network"
+#    network_mode: host  # 使用主机网络模式
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  my_network:
+    name: "my_network"

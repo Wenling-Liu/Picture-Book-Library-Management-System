@@ -1,0 +1,1453 @@
+basePath: /api/v1
+definitions:
+  controller.Activity:
+    properties:
+      activity_id:
+        type: integer
+      info:
+        $ref: '#/definitions/controller.ActivityInfo'
+    required:
+    - activity_id
+    - info
+    type: object
+  controller.ActivityInfo:
+    properties:
+      activity_name:
+        description: ActivityName 活动名称，必填项
+        type: string
+      activity_type:
+        description: ActivityType 活动类型，必填项，暂时有parent_child_interactions,handmade_diy,theme_experience,role_play
+        type: string
+      addr:
+        description: Addr 活动地址，必填项
+        type: string
+      end_time:
+        description: EndTime 活动结束时间，必填项，时间格式为"2025-01-01 12:00:00"，注意时区是上海时区
+        type: string
+      manager:
+        description: Manager 负责人姓名，必填项
+        type: string
+      phone:
+        description: Phone 联系电话，必填项
+        type: string
+      start_time:
+        description: StartTime 活动开始时间，必填项，时间格式为"2025-01-01 12:00:00"，注意时区是上海时区
+        type: string
+    required:
+    - activity_name
+    - activity_type
+    - addr
+    - end_time
+    - manager
+    - phone
+    - start_time
+    type: object
+  controller.AddActivityReq:
+    properties:
+      info:
+        $ref: '#/definitions/controller.ActivityInfo'
+    required:
+    - info
+    type: object
+  controller.AddActivityResp:
+    properties:
+      code:
+        description: Code 响应状态码，必填项
+        type: integer
+      data:
+        description: Data 返回的数据结构
+        properties:
+          activity_id:
+            description: ActivityID 新增活动的唯一标识符，必填项
+            type: integer
+        required:
+        - activity_id
+        type: object
+      msg:
+        description: Msg 响应消息，必填项
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.AddStockReq:
+    properties:
+      author:
+        description: 作者
+        type: string
+      category:
+        description: 类别,目前有[children_story,science_knowledge,art_enlightenment]
+        type: string
+      name:
+        description: 书本名称
+        type: string
+      publisher:
+        description: 出版社
+        type: string
+      quantity_added:
+        description: 添加的库存数目
+        type: integer
+      user_id:
+        description: user_id字段不为空是则为捐献接口
+        type: integer
+    required:
+    - author
+    - category
+    - name
+    - publisher
+    - quantity_added
+    type: object
+  controller.AddStockResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          book_id:
+            description: 书本ID
+            type: integer
+        required:
+        - book_id
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - msg
+    type: object
+  controller.Book:
+    properties:
+      author:
+        description: 作者
+        type: string
+      book_id:
+        description: 书本ID
+        type: integer
+      category:
+        description: 类别,目前有[children_story,science_knowledge,art_enlightenment]
+        type: string
+      created_at:
+        description: 入库时间
+        type: string
+      name:
+        description: 书本名称
+        type: string
+      publisher:
+        description: 出版社
+        type: string
+      stock:
+        description: 库存数量
+        type: integer
+      stock_status:
+        description: 库存状态,有三种[adequate,early_warning,shortage]
+        type: string
+    required:
+    - author
+    - book_id
+    - category
+    - created_at
+    - name
+    - publisher
+    - stock
+    - stock_status
+    type: object
+  controller.BookBorrowRecord:
+    properties:
+      book_id:
+        description: 书本ID【这个你可以理解为一类书，比如《高等数学》】
+        type: integer
+      copy_id:
+        description: "副本ID\t【这个你可以理解为具体一本书，比如《高等数学》的第一本"
+        type: integer
+      return_status:
+        description: 归还状态,有三种[waiting_return,returned,overdue]
+        type: string
+      should_return_time:
+        description: 应该归还的时间
+        type: string
+      user_id:
+        description: 用户ID
+        type: integer
+      user_name:
+        description: 用户名
+        type: string
+    required:
+    - book_id
+    - copy_id
+    - return_status
+    - should_return_time
+    - user_id
+    - user_name
+    type: object
+  controller.BorrowBookReq:
+    properties:
+      book_id:
+        description: 书本ID【这个你可以理解为一类书，比如《高等数学》】
+        type: integer
+      borrower_id:
+        description: 借阅者ID
+        type: integer
+      copy_id:
+        description: 具体某本书的ID
+        type: integer
+      expected_return_time:
+        description: 预计归还时间,格式为"2006-01-02"
+        type: string
+    required:
+    - book_id
+    - borrower_id
+    - copy_id
+    - expected_return_time
+    type: object
+  controller.BorrowBookResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          book_id:
+            description: 实际借阅的书本ID
+            type: integer
+          copy_id:
+            description: "副本ID\t【这个你可以理解为具体一本书，比如《高等数学》的第一本】"
+            type: integer
+        required:
+        - book_id
+        - copy_id
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.CategoryInfo:
+    properties:
+      category:
+        description: 分类名称
+        type: string
+      count:
+        description: 分类数量
+        type: integer
+    type: object
+  controller.CreateVolunteerReq:
+    properties:
+      age:
+        description: 年龄
+        type: integer
+      expertiseArea:
+        description: 专业领域
+        type: string
+      name:
+        description: 姓名
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      serviceTimePreference:
+        description: 服务时间偏好
+        type: string
+    required:
+    - age
+    - expertiseArea
+    - name
+    - phone
+    - serviceTimePreference
+    type: object
+  controller.CreateVolunteerResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          volunteer_id:
+            type: integer
+        required:
+        - volunteer_id
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.DonateRecords:
+    properties:
+      book_name:
+        description: 书籍名称
+        type: string
+      donate_num:
+        description: 捐赠数目
+        type: integer
+      donate_time:
+        description: 捐赠时间
+        type: string
+      phone:
+        description: 电话
+        type: string
+      user_id:
+        description: 用户ID
+        type: integer
+      user_name:
+        description: 用户名称
+        type: string
+    required:
+    - book_name
+    - donate_num
+    - donate_time
+    - phone
+    - user_id
+    - user_name
+    type: object
+  controller.FuzzyQueryBookStockResp:
+    properties:
+      code:
+        type: integer
+      data:
+        description: 数据
+        properties:
+          books:
+            description: 数据
+            items:
+              $ref: '#/definitions/controller.Book'
+            type: array
+          current_page:
+            description: 当前页
+            type: integer
+          total_num:
+            description: 总数量
+            type: integer
+          total_page:
+            description: 总页数
+            type: integer
+        required:
+        - books
+        - current_page
+        - total_num
+        - total_page
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.GenerateCaptchaResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          image:
+            type: string
+          verification_code_id:
+            type: string
+        required:
+        - image
+        - verification_code_id
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - msg
+    type: object
+  controller.GetActivityStaticsResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          activity_participation_rate:
+            description: 参与率,值以乘100为单位
+            type: integer
+          ended_num:
+            description: 已结束活动数量
+            type: integer
+          ongoing_num:
+            description: 进行中活动数量
+            type: integer
+          total_applicants:
+            description: 报名人数
+            type: integer
+          total_num:
+            description: 活动总数
+            type: integer
+          upcoming_num:
+            description: 即将开始活动数量
+            type: integer
+        required:
+        - activity_participation_rate
+        - ended_num
+        - ongoing_num
+        - total_applicants
+        - total_num
+        - upcoming_num
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.GetAvailableCopyBookResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          copy_ids:
+            items:
+              type: integer
+            type: array
+        required:
+        - copy_ids
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.GetDonationRankingResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          rankings:
+            items:
+              $ref: '#/definitions/controller.Rank'
+            type: array
+        required:
+        - rankings
+        type: object
+    required:
+    - code
+    - data
+    type: object
+  controller.GetVIPStaticsResp:
+    properties:
+      gold_num:
+        description: 金卡会员的数量
+        type: integer
+      normal_num:
+        description: 普通会员的数量
+        type: integer
+      silver_num:
+        description: 银卡会员的数量
+        type: integer
+    required:
+    - gold_num
+    - normal_num
+    - silver_num
+    type: object
+  controller.GetVolunteerApplicationsResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          applications:
+            description: 申请列表
+            items:
+              $ref: '#/definitions/controller.VolunteerApplicationInfo'
+            type: array
+          current_page:
+            description: 当前页码
+            type: integer
+          total:
+            description: 总记录数
+            type: integer
+          total_page:
+            description: 总页数
+            type: integer
+        required:
+        - applications
+        - current_page
+        - total
+        - total_page
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.GetVolunteerInfosResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          current_page:
+            description: 当前页码
+            type: integer
+          total:
+            description: 总记录数
+            type: integer
+          total_page:
+            description: 总页数
+            type: integer
+          volunteers:
+            description: 志愿者列表
+            items:
+              $ref: '#/definitions/controller.VolunteerInfo'
+            type: array
+        required:
+        - current_page
+        - total
+        - total_page
+        - volunteers
+        type: object
+      msg:
+        description: 响应消息
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.HomePageResp:
+    properties:
+      active_users:
+        description: 活跃用户数量
+        type: integer
+      avg_borrow_duration:
+        description: 平均借阅时长（单位天）
+        type: number
+      category_infos:
+        description: 书籍分类信息
+        items:
+          $ref: '#/definitions/controller.CategoryInfo'
+        type: array
+      hot_book:
+        description: 热门书籍
+        type: string
+      low_stock_count:
+        description: 库存不足数量
+        type: integer
+      month_borrowed:
+        description: 本月借阅数量
+        type: integer
+      monthly_borrowed:
+        description: 近六个月每月借阅数目
+        items:
+          $ref: '#/definitions/controller.MonthlyBorrowed'
+        type: array
+      new_users:
+        description: 新增用户数
+        type: integer
+      overdue_books:
+        description: 逾期未归还书本数量
+        type: integer
+      today_borrowed:
+        description: 今日借阅数量
+        type: integer
+      total_stock:
+        description: 库存总数
+        type: integer
+    type: object
+  controller.ListDonateRecordsResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          current_page:
+            description: 当前页
+            type: integer
+          donate_records:
+            description: 捐赠记录
+            items:
+              $ref: '#/definitions/controller.DonateRecords'
+            type: array
+          total_num:
+            description: 总数量
+            type: integer
+          total_page:
+            description: 总页数
+            type: integer
+        required:
+        - current_page
+        - donate_records
+        - total_num
+        - total_page
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.LoginResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          token:
+            type: string
+        required:
+        - token
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - msg
+    type: object
+  controller.MonthlyBorrowed:
+    properties:
+      borrow_count:
+        description: 借阅数目
+        type: integer
+      month:
+        description: 月份
+        type: string
+    type: object
+  controller.QueryActivityResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          activitys:
+            items:
+              $ref: '#/definitions/controller.Activity'
+            type: array
+          current_page:
+            type: integer
+          total:
+            type: integer
+          total_page:
+            type: integer
+        required:
+        - activitys
+        - current_page
+        - total
+        - total_page
+        type: object
+    required:
+    - code
+    - data
+    type: object
+  controller.QueryBookBorrowRecordResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          borrow_records:
+            items:
+              $ref: '#/definitions/controller.BookBorrowRecord'
+            type: array
+          current_page:
+            description: 当前页
+            type: integer
+          total_num:
+            description: 总数量
+            type: integer
+          total_page:
+            description: 总页数
+            type: integer
+        required:
+        - borrow_records
+        - current_page
+        - total_num
+        - total_page
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.QueryStatisticsBorrowRecordsResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          art_enlightenment_num:
+            type: integer
+          children_story_num:
+            type: integer
+          science_knowledge_num:
+            type: integer
+        required:
+        - art_enlightenment_num
+        - children_story_num
+        - science_knowledge_num
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.Rank:
+    properties:
+      donate_num:
+        description: 捐赠数目
+        type: integer
+      donate_times:
+        description: 捐赠次数
+        type: integer
+      updated_at:
+        description: 最近捐赠时间
+        type: string
+      user_id:
+        description: 用户ID
+        type: integer
+      user_name:
+        description: 用户名称
+        type: string
+    required:
+    - donate_num
+    - donate_times
+    - updated_at
+    - user_id
+    - user_name
+    type: object
+  controller.SearchUserResp:
+    properties:
+      code:
+        type: integer
+      data:
+        properties:
+          current_page:
+            type: integer
+          total_num:
+            type: integer
+          total_page:
+            type: integer
+          users:
+            items:
+              $ref: '#/definitions/controller.User'
+            type: array
+        required:
+        - current_page
+        - total_num
+        - total_page
+        - users
+        type: object
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.UpdateActivityReq:
+    properties:
+      activity_id:
+        description: ActivityID 活动唯一标识符，必填项
+        type: integer
+      info:
+        $ref: '#/definitions/controller.ActivityInfo'
+    required:
+    - activity_id
+    - info
+    type: object
+  controller.UpdateActivityResp:
+    properties:
+      code:
+        description: Code 响应状态码，必填项
+        type: integer
+      data:
+        description: Data 返回的数据结构
+        type: object
+      msg:
+        description: Msg 响应消息，必填项
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.UpdateBorrowStatusReq:
+    properties:
+      book_id:
+        description: 书本ID【这个你可以理解为一类书，比如《高等数学》】
+        type: integer
+      copy_id:
+        description: "副本ID\t【这个你可以理解为具体一本书，比如《高等数学》的第一本】"
+        type: integer
+      status:
+        description: 要更新的状态,取值有[waiting_return,returned,overdue]
+        type: string
+    required:
+    - book_id
+    - copy_id
+    - status
+    type: object
+  controller.UpdateBorrowStatusResp:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    required:
+    - code
+    - data
+    - msg
+    type: object
+  controller.User:
+    properties:
+      gender:
+        description: 性别
+        type: string
+      id:
+        description: 用户ID
+        type: integer
+      integral:
+        description: 积分
+        type: integer
+      is_vip:
+        description: 是否是会员
+        type: boolean
+      name:
+        description: 姓名
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      status:
+        description: 用户状态,目前有
+        type: string
+      vip_levels:
+        description: 会员等级
+        type: string
+    required:
+    - gender
+    - id
+    - integral
+    - is_vip
+    - name
+    - phone
+    - status
+    type: object
+  controller.VolunteerApplicationInfo:
+    properties:
+      age:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  controller.VolunteerInfo:
+    properties:
+      age:
+        description: 年龄
+        type: integer
+      createdAt:
+        description: 创建时间
+        type: string
+      expertiseArea:
+        description: 专业领域
+        type: string
+      id:
+        description: ID
+        type: integer
+      name:
+        description: 姓名
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      serviceTimePreference:
+        description: 服务时间偏好
+        type: string
+    type: object
+host: localhost:8989
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server for a book management system.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Book Management API
+  version: "1.0"
+paths:
+  /api/v1/activity/add:
+    post:
+      consumes:
+      - application/json
+      description: 创建新的图书漂流活动
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 新增活动请求
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/controller.AddActivityReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.AddActivityResp'
+      summary: 新增活动
+      tags:
+      - 活动管理
+  /api/v1/activity/get_statics:
+    get:
+      consumes:
+      - application/json
+      description: 获取活动的总数、报名人数、参与率、已结束、进行中和即将开始的活动数量
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.GetActivityStaticsResp'
+      summary: 获取活动统计信息
+      tags:
+      - 活动管理
+  /api/v1/activity/query:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询图书漂流活动
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Page 当前页码，必填项
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: PageSize 每页显示的数量，必填项
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: Status 活动状态，可选项,活动状态有pending，ongoing，ended
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.QueryActivityResp'
+      summary: 查询活动列表
+      tags:
+      - 活动管理
+  /api/v1/activity/update:
+    put:
+      consumes:
+      - application/json
+      description: 更新已存在的图书漂流活动
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 更新活动请求
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UpdateActivityReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.UpdateActivityResp'
+      summary: 更新活动信息
+      tags:
+      - 活动管理
+  /api/v1/book/borrow/add:
+    post:
+      consumes:
+      - application/json
+      description: 借书接口
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 借书请求
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/controller.BorrowBookReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.BorrowBookResp'
+      summary: 借书
+      tags:
+      - 借书
+  /api/v1/book/borrow/get_available:
+    get:
+      consumes:
+      - application/json
+      description: 获取可借用的书籍,当返回的数量等于page_size+1时，则代表还有下一页，否则，没有
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: query
+        name: book_id
+        required: true
+        type: integer
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.GetAvailableCopyBookResp'
+      summary: 获取可借用的书籍
+      tags:
+      - 借书
+  /api/v1/book/borrow/query:
+    get:
+      consumes:
+      - application/json
+      description: 查询借书记录
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 第几页
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: 每页大小
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: 借阅状态的查询条件
+        in: query
+        name: query_status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.QueryBookBorrowRecordResp'
+      summary: 查询借书记录
+      tags:
+      - 借书
+  /api/v1/book/borrow/query_statistics:
+    get:
+      consumes:
+      - application/json
+      description: 获取统计借阅记录
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 示例值 "week" "month" "year"
+        in: query
+        name: pattern
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.QueryStatisticsBorrowRecordsResp'
+      summary: 获取统计借阅记录
+      tags:
+      - 借书
+  /api/v1/book/borrow/update_status:
+    put:
+      consumes:
+      - application/json
+      description: 更新借阅状态
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 更新请求
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UpdateBorrowStatusReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.UpdateBorrowStatusResp'
+      summary: 更新借阅状态
+      tags:
+      - 借书
+  /api/v1/book/donate/get_ranking:
+    get:
+      consumes:
+      - application/json
+      description: 获取捐赠排名
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: query
+        name: top
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.GetDonationRankingResp'
+      summary: 获取捐赠排名
+      tags:
+      - 捐赠
+  /api/v1/book/donate/list:
+    get:
+      consumes:
+      - application/json
+      description: 列出捐赠记录
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 当前页
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: 每页大小
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.ListDonateRecordsResp'
+      summary: 列出捐赠记录
+      tags:
+      - 捐赠
+  /api/v1/book/stock/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加库存接口
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 增加库存请求
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/controller.AddStockReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.AddStockResp'
+      summary: 添加库存
+      tags:
+      - 库存
+  /api/v1/book/stock/fuzzy_query:
+    get:
+      consumes:
+      - application/json
+      description: 模糊查询库存信息,没有任何查询条件就是直接列出数据
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 作者
+        in: query
+        name: author
+        type: string
+      - description: 书本ID
+        in: query
+        name: book_id
+        type: integer
+      - description: 类别
+        in: query
+        name: category
+        type: string
+      - description: 书本名称
+        in: query
+        name: name
+        type: string
+      - description: 第几页
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: 每页大小
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.FuzzyQueryBookStockResp'
+      summary: 模糊查询库存信息
+      tags:
+      - 库存
+  /api/v1/home/get_statics:
+    get:
+      consumes:
+      - application/json
+      description: 获取库存总数、今日借阅数量、本月借阅数量、活跃用户数量、热门书籍、平均借阅时长、新增用户数、库存不足数量以及逾期未归还书本数量
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 统计数据
+          schema:
+            $ref: '#/definitions/controller.HomePageResp'
+      summary: 获取首页统计数据
+      tags:
+      - 首页
+  /api/v1/user/search:
+    get:
+      consumes:
+      - application/json
+      description: 查询用户
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: query
+        name: is_vip
+        type: boolean
+      - in: query
+        name: level
+        type: string
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: page_size
+        required: true
+        type: integer
+      - in: query
+        name: phone
+        type: string
+      - in: query
+        name: user_id
+        type: integer
+      - in: query
+        name: user_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/controller.SearchUserResp'
+      summary: 查询用户
+      tags:
+      - 用户
+  /api/v1/user/vip_statics:
+    get:
+      consumes:
+      - application/json
+      description: 获取会员的统计数据
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/controller.GetVIPStaticsResp'
+      summary: 获取会员的统计数据
+      tags:
+      - 用户
+  /api/v1/volunteer/create:
+    post:
+      consumes:
+      - application/json
+      description: 新增志愿者信息
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 创建志愿者请求
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/controller.CreateVolunteerReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.CreateVolunteerResp'
+      summary: 创建志愿者
+      tags:
+      - 志愿者管理
+  /api/v1/volunteer/list_application:
+    get:
+      consumes:
+      - application/json
+      description: 分页获取申请志愿者的信息，包括姓名、电话号码和年龄
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.GetVolunteerApplicationsResp'
+      summary: 获取申请志愿者列表
+      tags:
+      - 志愿者管理
+  /api/v1/volunteer/query:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询志愿者信息或根据ID查询单个志愿者
+      parameters:
+      - description: 鉴权
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - in: query
+        name: id
+        type: integer
+      - in: query
+        name: page
+        required: true
+        type: integer
+      - in: query
+        name: page_size
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.GetVolunteerInfosResp'
+      summary: 查询志愿者信息
+      tags:
+      - 志愿者管理
+swagger: "2.0"

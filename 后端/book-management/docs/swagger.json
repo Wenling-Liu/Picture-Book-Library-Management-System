@@ -1,0 +1,2096 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server for a book management system.",
+        "title": "Book Management API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8989",
+    "basePath": "/api/v1",
+    "paths": {
+        "/api/v1/activity/add": {
+            "post": {
+                "description": "创建新的图书漂流活动",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动管理"
+                ],
+                "summary": "新增活动",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "新增活动请求",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.AddActivityReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.AddActivityResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/activity/get_statics": {
+            "get": {
+                "description": "获取活动的总数、报名人数、参与率、已结束、进行中和即将开始的活动数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动管理"
+                ],
+                "summary": "获取活动统计信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.GetActivityStaticsResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/activity/query": {
+            "get": {
+                "description": "分页查询图书漂流活动",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动管理"
+                ],
+                "summary": "查询活动列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page 当前页码，必填项",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "PageSize 每页显示的数量，必填项",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Status 活动状态，可选项,活动状态有pending，ongoing，ended",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.QueryActivityResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/activity/update": {
+            "put": {
+                "description": "更新已存在的图书漂流活动",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动管理"
+                ],
+                "summary": "更新活动信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "更新活动请求",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.UpdateActivityReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.UpdateActivityResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/borrow/add": {
+            "post": {
+                "description": "借书接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "借书"
+                ],
+                "summary": "借书",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "借书请求",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.BorrowBookReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.BorrowBookResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/borrow/get_available": {
+            "get": {
+                "description": "获取可借用的书籍,当返回的数量等于page_size+1时，则代表还有下一页，否则，没有",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "借书"
+                ],
+                "summary": "获取可借用的书籍",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "book_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.GetAvailableCopyBookResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/borrow/query": {
+            "get": {
+                "description": "查询借书记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "借书"
+                ],
+                "summary": "查询借书记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "第几页",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "借阅状态的查询条件",
+                        "name": "query_status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.QueryBookBorrowRecordResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/borrow/query_statistics": {
+            "get": {
+                "description": "获取统计借阅记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "借书"
+                ],
+                "summary": "获取统计借阅记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "示例值 \"week\" \"month\" \"year\"",
+                        "name": "pattern",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.QueryStatisticsBorrowRecordsResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/borrow/update_status": {
+            "put": {
+                "description": "更新借阅状态",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "借书"
+                ],
+                "summary": "更新借阅状态",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "更新请求",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.UpdateBorrowStatusReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.UpdateBorrowStatusResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/donate/get_ranking": {
+            "get": {
+                "description": "获取捐赠排名",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "捐赠"
+                ],
+                "summary": "获取捐赠排名",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "top",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.GetDonationRankingResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/donate/list": {
+            "get": {
+                "description": "列出捐赠记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "捐赠"
+                ],
+                "summary": "列出捐赠记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前页",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ListDonateRecordsResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/stock/add": {
+            "post": {
+                "description": "添加库存接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "库存"
+                ],
+                "summary": "添加库存",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "增加库存请求",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.AddStockReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.AddStockResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/book/stock/fuzzy_query": {
+            "get": {
+                "description": "模糊查询库存信息,没有任何查询条件就是直接列出数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "库存"
+                ],
+                "summary": "模糊查询库存信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "作者",
+                        "name": "author",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "书本ID",
+                        "name": "book_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "类别",
+                        "name": "category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "书本名称",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "第几页",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.FuzzyQueryBookStockResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/home/get_statics": {
+            "get": {
+                "description": "获取库存总数、今日借阅数量、本月借阅数量、活跃用户数量、热门书籍、平均借阅时长、新增用户数、库存不足数量以及逾期未归还书本数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "首页"
+                ],
+                "summary": "获取首页统计数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "统计数据",
+                        "schema": {
+                            "$ref": "#/definitions/controller.HomePageResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/search": {
+            "get": {
+                "description": "查询用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "查询用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "is_vip",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "level",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "phone",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "user_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "user_name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.SearchUserResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/vip_statics": {
+            "get": {
+                "description": "获取会员的统计数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "获取会员的统计数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/controller.GetVIPStaticsResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/volunteer/create": {
+            "post": {
+                "description": "新增志愿者信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "志愿者管理"
+                ],
+                "summary": "创建志愿者",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "创建志愿者请求",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.CreateVolunteerReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.CreateVolunteerResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/volunteer/list_application": {
+            "get": {
+                "description": "分页获取申请志愿者的信息，包括姓名、电话号码和年龄",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "志愿者管理"
+                ],
+                "summary": "获取申请志愿者列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.GetVolunteerApplicationsResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/volunteer/query": {
+            "get": {
+                "description": "分页查询志愿者信息或根据ID查询单个志愿者",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "志愿者管理"
+                ],
+                "summary": "查询志愿者信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "鉴权",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.GetVolunteerInfosResp"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.Activity": {
+            "type": "object",
+            "required": [
+                "activity_id",
+                "info"
+            ],
+            "properties": {
+                "activity_id": {
+                    "type": "integer"
+                },
+                "info": {
+                    "$ref": "#/definitions/controller.ActivityInfo"
+                }
+            }
+        },
+        "controller.ActivityInfo": {
+            "type": "object",
+            "required": [
+                "activity_name",
+                "activity_type",
+                "addr",
+                "end_time",
+                "manager",
+                "phone",
+                "start_time"
+            ],
+            "properties": {
+                "activity_name": {
+                    "description": "ActivityName 活动名称，必填项",
+                    "type": "string"
+                },
+                "activity_type": {
+                    "description": "ActivityType 活动类型，必填项，暂时有parent_child_interactions,handmade_diy,theme_experience,role_play",
+                    "type": "string"
+                },
+                "addr": {
+                    "description": "Addr 活动地址，必填项",
+                    "type": "string"
+                },
+                "end_time": {
+                    "description": "EndTime 活动结束时间，必填项，时间格式为\"2025-01-01 12:00:00\"，注意时区是上海时区",
+                    "type": "string"
+                },
+                "manager": {
+                    "description": "Manager 负责人姓名，必填项",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "Phone 联系电话，必填项",
+                    "type": "string"
+                },
+                "start_time": {
+                    "description": "StartTime 活动开始时间，必填项，时间格式为\"2025-01-01 12:00:00\"，注意时区是上海时区",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.AddActivityReq": {
+            "type": "object",
+            "required": [
+                "info"
+            ],
+            "properties": {
+                "info": {
+                    "$ref": "#/definitions/controller.ActivityInfo"
+                }
+            }
+        },
+        "controller.AddActivityResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "description": "Code 响应状态码，必填项",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "Data 返回的数据结构",
+                    "type": "object",
+                    "required": [
+                        "activity_id"
+                    ],
+                    "properties": {
+                        "activity_id": {
+                            "description": "ActivityID 新增活动的唯一标识符，必填项",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "description": "Msg 响应消息，必填项",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.AddStockReq": {
+            "type": "object",
+            "required": [
+                "author",
+                "category",
+                "name",
+                "publisher",
+                "quantity_added"
+            ],
+            "properties": {
+                "author": {
+                    "description": "作者",
+                    "type": "string"
+                },
+                "category": {
+                    "description": "类别,目前有[children_story,science_knowledge,art_enlightenment]",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "书本名称",
+                    "type": "string"
+                },
+                "publisher": {
+                    "description": "出版社",
+                    "type": "string"
+                },
+                "quantity_added": {
+                    "description": "添加的库存数目",
+                    "type": "integer"
+                },
+                "user_id": {
+                    "description": "user_id字段不为空是则为捐献接口",
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.AddStockResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "book_id"
+                    ],
+                    "properties": {
+                        "book_id": {
+                            "description": "书本ID",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.Book": {
+            "type": "object",
+            "required": [
+                "author",
+                "book_id",
+                "category",
+                "created_at",
+                "name",
+                "publisher",
+                "stock",
+                "stock_status"
+            ],
+            "properties": {
+                "author": {
+                    "description": "作者",
+                    "type": "string"
+                },
+                "book_id": {
+                    "description": "书本ID",
+                    "type": "integer"
+                },
+                "category": {
+                    "description": "类别,目前有[children_story,science_knowledge,art_enlightenment]",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "入库时间",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "书本名称",
+                    "type": "string"
+                },
+                "publisher": {
+                    "description": "出版社",
+                    "type": "string"
+                },
+                "stock": {
+                    "description": "库存数量",
+                    "type": "integer"
+                },
+                "stock_status": {
+                    "description": "库存状态,有三种[adequate,early_warning,shortage]",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.BookBorrowRecord": {
+            "type": "object",
+            "required": [
+                "book_id",
+                "copy_id",
+                "return_status",
+                "should_return_time",
+                "user_id",
+                "user_name"
+            ],
+            "properties": {
+                "book_id": {
+                    "description": "书本ID【这个你可以理解为一类书，比如《高等数学》】",
+                    "type": "integer"
+                },
+                "copy_id": {
+                    "description": "副本ID\t【这个你可以理解为具体一本书，比如《高等数学》的第一本",
+                    "type": "integer"
+                },
+                "return_status": {
+                    "description": "归还状态,有三种[waiting_return,returned,overdue]",
+                    "type": "string"
+                },
+                "should_return_time": {
+                    "description": "应该归还的时间",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "integer"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.BorrowBookReq": {
+            "type": "object",
+            "required": [
+                "book_id",
+                "borrower_id",
+                "copy_id",
+                "expected_return_time"
+            ],
+            "properties": {
+                "book_id": {
+                    "description": "书本ID【这个你可以理解为一类书，比如《高等数学》】",
+                    "type": "integer"
+                },
+                "borrower_id": {
+                    "description": "借阅者ID",
+                    "type": "integer"
+                },
+                "copy_id": {
+                    "description": "具体某本书的ID",
+                    "type": "integer"
+                },
+                "expected_return_time": {
+                    "description": "预计归还时间,格式为\"2006-01-02\"",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.BorrowBookResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "book_id",
+                        "copy_id"
+                    ],
+                    "properties": {
+                        "book_id": {
+                            "description": "实际借阅的书本ID",
+                            "type": "integer"
+                        },
+                        "copy_id": {
+                            "description": "副本ID\t【这个你可以理解为具体一本书，比如《高等数学》的第一本】",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.CategoryInfo": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "count": {
+                    "description": "分类数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.CreateVolunteerReq": {
+            "type": "object",
+            "required": [
+                "age",
+                "expertiseArea",
+                "name",
+                "phone",
+                "serviceTimePreference"
+            ],
+            "properties": {
+                "age": {
+                    "description": "年龄",
+                    "type": "integer"
+                },
+                "expertiseArea": {
+                    "description": "专业领域",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "serviceTimePreference": {
+                    "description": "服务时间偏好",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.CreateVolunteerResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "volunteer_id"
+                    ],
+                    "properties": {
+                        "volunteer_id": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.DonateRecords": {
+            "type": "object",
+            "required": [
+                "book_name",
+                "donate_num",
+                "donate_time",
+                "phone",
+                "user_id",
+                "user_name"
+            ],
+            "properties": {
+                "book_name": {
+                    "description": "书籍名称",
+                    "type": "string"
+                },
+                "donate_num": {
+                    "description": "捐赠数目",
+                    "type": "integer"
+                },
+                "donate_time": {
+                    "description": "捐赠时间",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "电话",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "integer"
+                },
+                "user_name": {
+                    "description": "用户名称",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.FuzzyQueryBookStockResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "数据",
+                    "type": "object",
+                    "required": [
+                        "books",
+                        "current_page",
+                        "total_num",
+                        "total_page"
+                    ],
+                    "properties": {
+                        "books": {
+                            "description": "数据",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.Book"
+                            }
+                        },
+                        "current_page": {
+                            "description": "当前页",
+                            "type": "integer"
+                        },
+                        "total_num": {
+                            "description": "总数量",
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "description": "总页数",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.GenerateCaptchaResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "image",
+                        "verification_code_id"
+                    ],
+                    "properties": {
+                        "image": {
+                            "type": "string"
+                        },
+                        "verification_code_id": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.GetActivityStaticsResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "activity_participation_rate",
+                        "ended_num",
+                        "ongoing_num",
+                        "total_applicants",
+                        "total_num",
+                        "upcoming_num"
+                    ],
+                    "properties": {
+                        "activity_participation_rate": {
+                            "description": "参与率,值以乘100为单位",
+                            "type": "integer"
+                        },
+                        "ended_num": {
+                            "description": "已结束活动数量",
+                            "type": "integer"
+                        },
+                        "ongoing_num": {
+                            "description": "进行中活动数量",
+                            "type": "integer"
+                        },
+                        "total_applicants": {
+                            "description": "报名人数",
+                            "type": "integer"
+                        },
+                        "total_num": {
+                            "description": "活动总数",
+                            "type": "integer"
+                        },
+                        "upcoming_num": {
+                            "description": "即将开始活动数量",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.GetAvailableCopyBookResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "copy_ids"
+                    ],
+                    "properties": {
+                        "copy_ids": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.GetDonationRankingResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "rankings"
+                    ],
+                    "properties": {
+                        "rankings": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.Rank"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "controller.GetVIPStaticsResp": {
+            "type": "object",
+            "required": [
+                "gold_num",
+                "normal_num",
+                "silver_num"
+            ],
+            "properties": {
+                "gold_num": {
+                    "description": "金卡会员的数量",
+                    "type": "integer"
+                },
+                "normal_num": {
+                    "description": "普通会员的数量",
+                    "type": "integer"
+                },
+                "silver_num": {
+                    "description": "银卡会员的数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.GetVolunteerApplicationsResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "applications",
+                        "current_page",
+                        "total",
+                        "total_page"
+                    ],
+                    "properties": {
+                        "applications": {
+                            "description": "申请列表",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.VolunteerApplicationInfo"
+                            }
+                        },
+                        "current_page": {
+                            "description": "当前页码",
+                            "type": "integer"
+                        },
+                        "total": {
+                            "description": "总记录数",
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "description": "总页数",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.GetVolunteerInfosResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "current_page",
+                        "total",
+                        "total_page",
+                        "volunteers"
+                    ],
+                    "properties": {
+                        "current_page": {
+                            "description": "当前页码",
+                            "type": "integer"
+                        },
+                        "total": {
+                            "description": "总记录数",
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "description": "总页数",
+                            "type": "integer"
+                        },
+                        "volunteers": {
+                            "description": "志愿者列表",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.VolunteerInfo"
+                            }
+                        }
+                    }
+                },
+                "msg": {
+                    "description": "响应消息",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.HomePageResp": {
+            "type": "object",
+            "properties": {
+                "active_users": {
+                    "description": "活跃用户数量",
+                    "type": "integer"
+                },
+                "avg_borrow_duration": {
+                    "description": "平均借阅时长（单位天）",
+                    "type": "number"
+                },
+                "category_infos": {
+                    "description": "书籍分类信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controller.CategoryInfo"
+                    }
+                },
+                "hot_book": {
+                    "description": "热门书籍",
+                    "type": "string"
+                },
+                "low_stock_count": {
+                    "description": "库存不足数量",
+                    "type": "integer"
+                },
+                "month_borrowed": {
+                    "description": "本月借阅数量",
+                    "type": "integer"
+                },
+                "monthly_borrowed": {
+                    "description": "近六个月每月借阅数目",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controller.MonthlyBorrowed"
+                    }
+                },
+                "new_users": {
+                    "description": "新增用户数",
+                    "type": "integer"
+                },
+                "overdue_books": {
+                    "description": "逾期未归还书本数量",
+                    "type": "integer"
+                },
+                "today_borrowed": {
+                    "description": "今日借阅数量",
+                    "type": "integer"
+                },
+                "total_stock": {
+                    "description": "库存总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "controller.ListDonateRecordsResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "current_page",
+                        "donate_records",
+                        "total_num",
+                        "total_page"
+                    ],
+                    "properties": {
+                        "current_page": {
+                            "description": "当前页",
+                            "type": "integer"
+                        },
+                        "donate_records": {
+                            "description": "捐赠记录",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.DonateRecords"
+                            }
+                        },
+                        "total_num": {
+                            "description": "总数量",
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "description": "总页数",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.LoginResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "token"
+                    ],
+                    "properties": {
+                        "token": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.MonthlyBorrowed": {
+            "type": "object",
+            "properties": {
+                "borrow_count": {
+                    "description": "借阅数目",
+                    "type": "integer"
+                },
+                "month": {
+                    "description": "月份",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.QueryActivityResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "activitys",
+                        "current_page",
+                        "total",
+                        "total_page"
+                    ],
+                    "properties": {
+                        "activitys": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.Activity"
+                            }
+                        },
+                        "current_page": {
+                            "type": "integer"
+                        },
+                        "total": {
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "controller.QueryBookBorrowRecordResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "borrow_records",
+                        "current_page",
+                        "total_num",
+                        "total_page"
+                    ],
+                    "properties": {
+                        "borrow_records": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.BookBorrowRecord"
+                            }
+                        },
+                        "current_page": {
+                            "description": "当前页",
+                            "type": "integer"
+                        },
+                        "total_num": {
+                            "description": "总数量",
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "description": "总页数",
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.QueryStatisticsBorrowRecordsResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "art_enlightenment_num",
+                        "children_story_num",
+                        "science_knowledge_num"
+                    ],
+                    "properties": {
+                        "art_enlightenment_num": {
+                            "type": "integer"
+                        },
+                        "children_story_num": {
+                            "type": "integer"
+                        },
+                        "science_knowledge_num": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.Rank": {
+            "type": "object",
+            "required": [
+                "donate_num",
+                "donate_times",
+                "updated_at",
+                "user_id",
+                "user_name"
+            ],
+            "properties": {
+                "donate_num": {
+                    "description": "捐赠数目",
+                    "type": "integer"
+                },
+                "donate_times": {
+                    "description": "捐赠次数",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "最近捐赠时间",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "integer"
+                },
+                "user_name": {
+                    "description": "用户名称",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.SearchUserResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "required": [
+                        "current_page",
+                        "total_num",
+                        "total_page",
+                        "users"
+                    ],
+                    "properties": {
+                        "current_page": {
+                            "type": "integer"
+                        },
+                        "total_num": {
+                            "type": "integer"
+                        },
+                        "total_page": {
+                            "type": "integer"
+                        },
+                        "users": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controller.User"
+                            }
+                        }
+                    }
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.UpdateActivityReq": {
+            "type": "object",
+            "required": [
+                "activity_id",
+                "info"
+            ],
+            "properties": {
+                "activity_id": {
+                    "description": "ActivityID 活动唯一标识符，必填项",
+                    "type": "integer"
+                },
+                "info": {
+                    "$ref": "#/definitions/controller.ActivityInfo"
+                }
+            }
+        },
+        "controller.UpdateActivityResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "description": "Code 响应状态码，必填项",
+                    "type": "integer"
+                },
+                "data": {
+                    "description": "Data 返回的数据结构",
+                    "type": "object"
+                },
+                "msg": {
+                    "description": "Msg 响应消息，必填项",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.UpdateBorrowStatusReq": {
+            "type": "object",
+            "required": [
+                "book_id",
+                "copy_id",
+                "status"
+            ],
+            "properties": {
+                "book_id": {
+                    "description": "书本ID【这个你可以理解为一类书，比如《高等数学》】",
+                    "type": "integer"
+                },
+                "copy_id": {
+                    "description": "副本ID\t【这个你可以理解为具体一本书，比如《高等数学》的第一本】",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "要更新的状态,取值有[waiting_return,returned,overdue]",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.UpdateBorrowStatusResp": {
+            "type": "object",
+            "required": [
+                "code",
+                "data",
+                "msg"
+            ],
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.User": {
+            "type": "object",
+            "required": [
+                "gender",
+                "id",
+                "integral",
+                "is_vip",
+                "name",
+                "phone",
+                "status"
+            ],
+            "properties": {
+                "gender": {
+                    "description": "性别",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "用户ID",
+                    "type": "integer"
+                },
+                "integral": {
+                    "description": "积分",
+                    "type": "integer"
+                },
+                "is_vip": {
+                    "description": "是否是会员",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "用户状态,目前有",
+                    "type": "string"
+                },
+                "vip_levels": {
+                    "description": "会员等级",
+                    "type": "string"
+                }
+            }
+        },
+        "controller.VolunteerApplicationInfo": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.VolunteerInfo": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "description": "年龄",
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "expertiseArea": {
+                    "description": "专业领域",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "serviceTimePreference": {
+                    "description": "服务时间偏好",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
