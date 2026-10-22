@@ -1,0 +1,23 @@
+.annouce-card {
+  border-radius: 8px;
+  overflow: auto;
+  box-sizing: border-box;
+  max-height: 71vh;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+  }
+
+  .announcement-list {
+    overflow-y: auto;
+  }
+}

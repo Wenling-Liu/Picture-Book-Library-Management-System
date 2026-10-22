@@ -1,0 +1,100 @@
+.home_container
+    display: flex
+    overflow-y: hidden
+    justify-content: center
+    align-items: center
+    height: 100%
+    box-sizing: border-box
+    background-color: #f0f0f0
+    color: #333
+    gap: 1rem
+    font-family: 'Arial', sans-serif
+    font-size: 1.5rem
+
+    .home_left,
+    .home_right
+        display: flex
+        flex-direction: column
+        box-sizing: border-box
+        height: 100%
+
+    .home_left
+        width: 70%
+        gap: 1rem
+        background: transparent
+
+        > div
+            border-radius: 8px
+
+    .home_right
+        width: 30%
+        background: #FACD91
+        padding: 0.5rem
+        border-radius: 8px
+
+.button_container
+    display: flex
+    flex-direction: column
+    overflow: hidden
+    justify-content: flex-start
+    height: 18%
+    background: #F8D6A9
+
+    .button_group
+        // box-sizing: border-box
+        width: 100%
+        flex: 1
+        display: flex
+        justify-content: center
+        gap: 0.5rem
+        padding: 0rem 0.5rem 1rem 0.5rem
+
+.data_show
+    display: flex
+    justify-content: center
+    box-sizing: border-box
+    padding: 0.5rem
+    height: 32%
+    background: #F8D6A9
+    gap: 0.5rem
+
+    // .data_show_left,
+    // .data_show_right
+    //     margin: 1rem
+
+    .data_show_left
+        height: 100%
+        width: 70%
+
+    .data_show_right
+        height: 100%
+        width: 30%
+        background: white
+
+.left_third
+    display: flex
+    flex-direction: column
+    justify-content: center
+    height: 50%
+    background: #F8D6A9
+    padding: 0.5rem
+
+    .plot
+        height: 100%
+        background: white
+
+        .plot_title
+            color: #7B4D12
+
+.title_container
+    display: flex
+
+    .title
+        font-size: 1.5rem
+        color: #7B4D12
+
+.scrollview_msg
+    flex: 1
+    border-radius: 8px
+    height: 100%
+    background: white
